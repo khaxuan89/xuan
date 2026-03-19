@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xuan.vn - Shop Online</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f3f3f3;
+}
+
+header{
+background:#ff5722;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.search{
+text-align:center;
+padding:10px;
+}
+
+.search input{
+width:300px;
+padding:8px;
+}
+
+.cart-btn{
+position:fixed;
+right:20px;
+top:20px;
+background:white;
+padding:10px 15px;
+border-radius:8px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+cursor:pointer;
+}
+
+.products{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+padding:20px;
+}
+
+.product{
+background:white;
+width:220px;
+margin:10px;
+padding:15px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+.product img{
+width:100%;
+}
+
+button{
+background:#ff5722;
+color:white;
+border:none;
+padding:8px 12px;
+cursor:pointer;
+border-radius:5px;
+}
+
+.cart-box{
+display:none;
+position:fixed;
+right:20px;
+top:70px;
+background:white;
+width:320px;
+max-height:400px;
+overflow:auto;
+padding:15px;
+border-radius:10px;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+}
+
+footer{
+background:#222;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:20px;
+}
+
+.qr{
+text-align:center;
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🛒 xuan.vn Shop</h1>
+</header>
+
+<div class="search">
+<input type="text" placeholder="Tìm sản phẩm..." onkeyup="searchProduct(this.value)">
+</div>
+
+<div class="cart-btn" onclick="toggleCart()">
+🛒 <span id="cart-count">0</span>
+</div>
+
+<div class="cart-box" id="cartBox">
+
+<h3>Giỏ hàng</h3>
+
+<div id="cart-items"></div>
+
+<hr>
+
+<strong>Tổng: <span id="total">0</span> đ</strong>
+
+<div class="qr">
+<p>Thanh toán QR</p>
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ThanhToanXuanVN">
+</div>
+
+</div>
+
+<div class="products" id="products">
+
+<div class="product">
+<img src="https://via.placeholder.com/200">
+<h3>Áo thun</h3>
+<p>150000</p>
+<button onclick="addToCart('Áo thun',150000)">Mua</button>
+</div>
+
+<div class="product">
+<img src="https://via.placeholder.com/200">
+<h3>Giày thể thao</h3>
+<p>500000</p>
+<button onclick="addToCart('Giày thể thao',500000)">Mua</button>
+</div>
+
+<div class="product">
+<img src="https://via.placeholder.com/200">
+<h3>Ba lô</h3>
+<p>300000</p>
+<button onclick="addToCart('Ba lô',300000)">Mua</button>
+</div>
+
+<div class="product">
+<img src="https://via.placeholder.com/200">
+<h3>Đồng hồ</h3>
+<p>700000</p>
+<button onclick="addToCart('Đồng hồ',700000)">Mua</button>
+</div>
+
+</div>
+
+<footer>
+© 2026 xuan.vn
+</footer>
+
+<script>
+
+let cart=[]
+let total=0
+
+function addToCart(name,price){
+
+let item=cart.find(p=>p.name===name)
+
+if(item){
+item.qty++
+}else{
+cart.push({name,price,qty:1})
+}
+
+updateCart()
+
+}
+
+function updateCart(){
+
+let items=document.getElementById("cart-items")
+items.innerHTML=""
+
+total=0
+
+cart.forEach(p=>{
+
+total+=p.price*p.qty
+
+let div=document.createElement("div")
+
+div.className="cart-item"
+
+div.innerHTML=`
+${p.name} x${p.qty}
+<span>${p.price*p.qty}đ</span>
+`
+
+items.appendChild(div)
+
+})
+
+document.getElementById("cart-count").innerText=cart.length
+document.getElementById("total").innerText=total
+
+}
+
+function toggleCart(){
+
+let box=document.getElementById("cartBox")
+
+box.style.display=box.style.display==="block"?"none":"block"
+
+}
+
+function searchProduct(text){
+
+let products=document.querySelectorAll(".product")
+
+products.forEach(p=>{
+
+let name=p.querySelector("h3").innerText.toLowerCase()
+
+if(name.includes(text.toLowerCase())){
+p.style.display="block"
+}else{
+p.style.display="none"
+}
+
+})
+
+}
+
+</script>
+
+</body>
+</html>
